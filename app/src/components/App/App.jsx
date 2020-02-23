@@ -54,6 +54,7 @@ function App() {
         console.log(e);
       })
       .then(() => {
+        setUser(null)
         setLoading(false);
       });
   };
@@ -62,7 +63,6 @@ function App() {
     loadUser();
   }, []);
 
-  console.log(users);
   return (
     <AppUI
       users={users}

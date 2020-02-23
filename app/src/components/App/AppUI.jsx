@@ -6,7 +6,8 @@ import style from './app.module.scss';
 
 function AppUI(props) {
   const { users, onDelete, loading, onSubmit, onChange } = props;
-  const showUserList = users && users.length > 0 ? true : false;
+  const length = users ? users.length : 0;
+  const showUserList = length > 0;
   return (
     <div>
       <nav class="nav">
@@ -19,7 +20,7 @@ function AppUI(props) {
           <h1 className="display-4">Create Users</h1>
         </div>
         <form
-          key={`form-${users.length}`}
+          key={`form-${length}`}
           disabled={loading}
           className={style.form}
           onSubmit={e => {
