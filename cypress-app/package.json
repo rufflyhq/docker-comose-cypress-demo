@@ -1,0 +1,15 @@
+{
+  "name": "cypress-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": ". ../scripts/dotenv.sh && cypress open",
+    "cli": "cypress run --config video=false"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^4.0.2"
+  }
+}

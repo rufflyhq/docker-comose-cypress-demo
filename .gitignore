@@ -49,3 +49,8 @@ build/
 
 # test-reports
 test-reports/*
+
+
+# cypress
+
+screenshots/

@@ -1,0 +1,67 @@
+version: '3'
+
+networks:
+  my-network:
+
+services:
+  db:
+    container_name: demo_app_db
+    networks:
+      - my-network
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 'mysecretpassword'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'postgres'
+    ports:
+      - '5432:5432'
+
+  server:
+    container_name: demo_app_server
+    build:
+      context: ./server/
+    ports:
+      - '3002:3000'
+    depends_on:
+      - db
+    networks:
+      - my-network
+    environment:
+      PGHOST: 'db'
+      PGUSER: 'postgres'
+      PGDATABASE: 'postgres'
+      PGPASSWORD: 'mysecretpassword'
+      PGPORT: 5432
+
+  app:
+    container_name: demo_app_app
+    build:
+      context: ./app/
+      args:
+        - REACT_APP_API_BASE_URL=http://server:3000/api/v1
+    ports:
+      - '3000:8080'
+    depends_on:
+      - db
+      - server
+    networks:
+      my-network:
+        aliases:
+          - my-demo-app.com
+
+  cypress:
+    container_name: demo_app_cypress
+    image: cypress
+    build:
+      context: './cypress-app/'
+    networks:
+      - my-network
+    depends_on:
+      - app
+    environment:
+      CYPRESS_baseUrl: http://my-demo-app.com:8080
+    volumes: 
+      - ./docker-volumes/e2e/screenshots:/cypress/cypress/screenshots
+      - ./docker-volumes/test-reports:/cypress/test-reports
+          
